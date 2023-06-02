@@ -37,12 +37,46 @@ packer.init({
 
 return require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
+  use 'akinsho/bufferline.nvim'
   use 'navarasu/onedark.nvim'
+  use 'numToStr/Comment.nvim'
+  use 'nvim-lualine/lualine.nvim'
+  use 'lewis6991/gitsigns.nvim'
+  -- Lua
+  use {
+    "folke/which-key.nvim",
+    config = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+      require("which-key").setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
+    end
+  }
   use {
     'windwp/nvim-autopairs',
     config = function()
       require("nvim-autopairs").setup{}
     end
+  }
+
+  use 'echasnovski/mini.surround'
+  use {
+    'nvim-telescope/telescope.nvim', tag = '0.1.1',
+    -- or                            , branch = '0.1.x',
+    requires = { {'nvim-lua/plenary.nvim'} }
+  }
+
+  use {
+  "nvim-neo-tree/neo-tree.nvim",
+    branch = "v2.x",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+      "MunifTanjim/nui.nvim",
+    }
   }
 
   -- LSP Support
