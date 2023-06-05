@@ -42,6 +42,8 @@ return require('packer').startup(function(use)
   use 'numToStr/Comment.nvim'
   use 'nvim-lualine/lualine.nvim'
   use 'lewis6991/gitsigns.nvim'
+  use 'nvim-treesitter/nvim-treesitter'
+
   -- Lua
   use {
     "folke/which-key.nvim",
@@ -59,6 +61,14 @@ return require('packer').startup(function(use)
     'windwp/nvim-autopairs',
     config = function()
       require("nvim-autopairs").setup{}
+      local present, apcmp = pcall(require, "nvim-autopairs.completion.cmp")
+      if not present then
+        return
+      end
+      require('cmp').event:on(
+      "confirm_done",
+      apcmp.on_confirm_done()
+      )
     end
   }
 
@@ -118,9 +128,6 @@ return require('packer').startup(function(use)
       require("lspsaga").setup({})
     end,
     requires = {
-      {"nvim-tree/nvim-web-devicons"},
-      --Please make sure you install markdown and markdown_inline parser
-      {"nvim-treesitter/nvim-treesitter"}
     },
   })
 

@@ -9,7 +9,7 @@ local options = {
   formatoptions = "jcroqlnt",
   hlsearch = false,
   laststatus = 0,
-  showmode = true,
+  -- showmode = true,
   winminwidth = 5,
   wrap = false,
 

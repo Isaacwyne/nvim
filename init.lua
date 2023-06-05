@@ -2,6 +2,7 @@ for _, source in ipairs({
   "core.options",
   "core.autocmds",
   "core.plugins",
+  "core.keymaps"
 }) do
   local present, fault = pcall(require, source)
   if not present then

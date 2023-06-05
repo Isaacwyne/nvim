@@ -131,7 +131,11 @@ lspconfig.lua_ls.setup {
   settings = {
     Lua = {
       diagnostics = {
-        globals = { "vim" },
+        enable = true,
+        globals = { "vim", "use" },
+      },
+      completion = {
+        callSnippet = "Replace"
       },
       workspace = {
         library = {
@@ -141,6 +145,9 @@ lspconfig.lua_ls.setup {
         },
         maxPreload = 100000,
         preloadFileSize = 10000,
+      },
+      telemetry = {
+        enable = false
       },
     },
   },

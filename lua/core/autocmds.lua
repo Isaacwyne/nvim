@@ -29,7 +29,13 @@ autocmd("BufEnter", {
   command = "set fo-=c fo-=r fo-=o",
 })
 
--- auto-remove trailing whitespace
+-- auto-remove trailing whitespace (check if Astronvim as this)
+autocmd("BufWritePre", {
+  group = augroup("whitespace"),
+  command = "%s/\\s\\+$//e",
+})
+
+-- go to the last location when opening a buffer
 autocmd("BufReadPost", {
   group = augroup("last_loc"),
   callback = function()
