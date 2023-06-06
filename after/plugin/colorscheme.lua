@@ -18,10 +18,12 @@ onedark.setup {
     strings = "none",
     variables = "italic",
   },
+
+  -- plugins config
   diagnostics = {
-    darker = true,                -- darker colors for diagnostics
-    undercurl = true,             -- use undercurl instead of underline for diagnostics
-    background = true,            -- use background color for virtual text
+    darker = true,              -- darker colors for diagnostics
+    undercurl = true,           -- use undercurl instead of underline for diagnostics
+    background = true,          -- use background color for virtual text
   },
 
   -- lualine options
@@ -29,4 +31,5 @@ onedark.setup {
     transparent = true,
   },
 }
+
 onedark.load()

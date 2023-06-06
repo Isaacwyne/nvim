@@ -1,110 +1,55 @@
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-
 local opt = vim.opt
+local g = vim.g
 
-local options = {
-  conceallevel = 3,
-  cursorline = true,
-  formatoptions = "jcroqlnt",
-  hlsearch = false,
-  laststatus = 0,
-  -- showmode = true,
-  winminwidth = 5,
-  wrap = false,
+-------------------------------------- options ------------------------------------------
+opt.laststatus = 3 -- global statusline
+opt.showmode = false
 
-  title = true,
+opt.cursorline = true
 
-  -- highlights
-  termguicolors = true,
+-- Indenting
+opt.expandtab = true
+opt.shiftwidth = 4
+opt.smartindent = true
+opt.tabstop = 4
+opt.softtabstop = 4
 
-  -- indenting
-  breakindent = true,
-  cindent = true,
-  expandtab = true,
-  linebreak = true,
-  shiftround = true,
-  shiftwidth = 4,
-  smartindent = true,
-  softtabstop = 4,
-  tabstop = 4,
+opt.fillchars = { eob = " " }
+opt.ignorecase = true
+opt.smartcase = true
+opt.mouse = "nvi"
 
-  belloff = "all",
-  hidden = true,
-  ignorecase = true,
-  mouse = "i",
-  smartcase = true,
-  swapfile = false,
+-- Numbers
+opt.number = true
+opt.relativenumber = true
+opt.numberwidth = 2
+opt.ruler = false
 
-  -- Number
-  number = true,
-  numberwidth = 2,
-  relativenumber = true,
-  ruler = false,
+-- disable nvim intro
+opt.shortmess:append "sI"
 
-  matchtime = 2,
-  scrolloff = 8,
-  -- showmatch = true,
-  sidescrolloff = 10,
-  signcolumn = "auto",
-  splitbelow = true,
-  splitright = true,
-  timeoutlen = 400,
-  undofile = true,
-  undolevels = 10000,
-  updatetime = 200,
+opt.signcolumn = "yes"
+opt.splitbelow = true
+opt.splitright = true
+opt.termguicolors = true
+opt.timeoutlen = 400
+opt.undofile = true
 
-  list = true,
-  shell = "bash",
-  spelllang = { "en" },
+-- interval for writing swap file to disk, also used by gitsigns
+opt.updatetime = 250
 
-  -- cool floating window popup menu for completion on the commandline
-  pumblend = 10,
-  pumheight = 10,
-  wildmode = "longest:full,full",       -- commandline completion mode
-  wildoptions = "pum",
-}
-for k, v in pairs(options) do
-  opt[k] = v
+-- go to previous/next line with h,l,left arrow and right arrow
+-- when cursor reaches end/beginning of line
+opt.whichwrap:append "<>[]hl"
+
+g.mapleader = " "
+g.maplocalleader = " "
+
+-- disable some default providers
+for _, provider in ipairs { "node", "perl", "python3", "ruby" } do
+  vim.g["loaded_" .. provider .. "_provider"] = 0
 end
 
--- opt.completeopt = "menu,menuone,noselect"
-
-if vim.fn.executable("rg") then
-  -- if ripgrep is installed, use that as grepper
-  opt.grepprg = "rg --vimgrep --no-heading"
-  opt.grepformat = "%f:%l:%c:%m,%f:%l:%m"
-end
-
-local default_providers = {
-  "node",
-  "perl",
-  "python3",
-  "ruby",
-}
-for _, provider in ipairs(default_providers) do
-    vim.g["loaded_" .. provider .. "_provider"] = 0
-end
-
-local default_plugins = {
-  "gzip",
-  "zip",
-  "zipPlugin",
-  "tar",
-  "tarPlugin",
-  "getscript",
-  "getscriptPlugin",
-  "vimball",
-  "vimballPlugin",
-  "2html_plugin",
-  "matchit",
-  "matchparen",
-  "logiPat",
-  "rrhelper",
-}
-for _, plugin in pairs(default_plugins) do
-  vim.g["loaded_" .. plugin] = 1
-end
-
--- fix markdown indentation settings
-vim.g.markdown_recommended_style = 0
+-- add binaries installed by mason.nvim to path
+local is_windows = vim.loop.os_uname().sysname == "Windows_NT"
+vim.env.PATH = vim.env.PATH .. (is_windows and ";" or ":") .. vim.fn.stdpath "data" .. "/mason/bin"
