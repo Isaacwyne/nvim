@@ -3,11 +3,15 @@ local g = vim.g
 
 -------------------------------------- options ------------------------------------------
 opt.laststatus = 3 -- global statusline
+opt.cursorline = true
 opt.showmode = false
+opt.hlsearch = false
 
 opt.cursorline = true
 
 -- Indenting
+opt.breakindent = true
+opt.cindent = true
 opt.expandtab = true
 opt.shiftwidth = 4
 opt.smartindent = true
@@ -18,6 +22,7 @@ opt.fillchars = { eob = " " }
 opt.ignorecase = true
 opt.smartcase = true
 opt.mouse = "nvi"
+opt.wrap = false
 
 -- Numbers
 opt.number = true
@@ -28,7 +33,9 @@ opt.ruler = false
 -- disable nvim intro
 opt.shortmess:append "sI"
 
-opt.signcolumn = "yes"
+opt.scrolloff = 10
+opt.sidescrolloff = 10
+opt.signcolumn = "auto"
 opt.splitbelow = true
 opt.splitright = true
 opt.termguicolors = true
@@ -53,3 +60,9 @@ end
 -- add binaries installed by mason.nvim to path
 local is_windows = vim.loop.os_uname().sysname == "Windows_NT"
 vim.env.PATH = vim.env.PATH .. (is_windows and ";" or ":") .. vim.fn.stdpath "data" .. "/mason/bin"
+
+if vim.fn.executable("rg") then
+  -- if ripgrep is installed, use that as grepper
+  opt.grepprg = "rg --vimgrep --no-heading"
+  opt.grepformat = "%f:%l:%c:%m,%f:%l:%m"
+end
