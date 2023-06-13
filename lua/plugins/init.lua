@@ -108,22 +108,8 @@ return {
   -- gitsigns
   {
     "lewis6991/gitsigns.nvim",
+    event = { "BufReadPre", "BufNewFile" },
     ft = { "gitcommit", "diff" },
-    init = function ()
-      -- load gitsigns only when a git file is opened
-      vim.api.nvim_create_autocmd({ "BufRead" }, {
-        group = vim.api.nvim_create_augroup("GitSignsLazyLoad", { clear = true }),
-        callback = function ()
-          vim.fn.system("git -C " .. '"' .. vim.fn.expand "%:p:h" .. '"' .. "rev-parse")
-          if vim.v.shell_error == 0 then
-            vim.api.nvim_del_augroup_by_name "GitSignsLazyLoad"
-            vim.schedule(function ()
-              require("lazy").load { plugins = { "gitsigns.nvim" } }
-            end)
-          end
-        end
-      })
-    end,
     opts = function ()
       return require("plugins.configs.others").gitsigns
     end,
@@ -273,6 +259,25 @@ return {
     event = "VimEnter",
     config = function()
       require("alpha").setup(require"alpha.themes.dashboard".config)
+    end,
+  },
+  {
+    "jose-elias-alvarez/null-ls.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "mason.nvim" },
+    opts = function()
+      local nls = require("null-ls")
+      return {
+        root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
+        sources = {
+          nls.builtins.formatting.fish_indent,
+          nls.builtins.diagnostics.fish,
+          nls.builtins.formatting.stylua,
+          nls.builtins.formatting.shfmt,
+          nls.builtins.code_actions.gitsigns,
+          -- nls.builtins.diagnostics.flake8,
+        },
+      }
     end,
   },
 }
