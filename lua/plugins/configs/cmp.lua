@@ -1,4 +1,4 @@
-local cmp = require "cmp"
+local cmp = require("cmp")
 -- local utils = require("core.utils")
 
 local function border(hl_name)
@@ -16,7 +16,7 @@ end
 
 local options = {
   completion = {
-    completeopt = "menu,menuone",
+    completeopt = "menu,menuone,noinsert",
   },
 
   window = {
@@ -25,7 +25,7 @@ local options = {
       scrollbar = false,
     },
     documentation = {
-      border = border "CmpDocBorder",
+      border = border("CmpDocBorder"),
       winhighlight = "Normal:CmpDoc",
     },
   },
@@ -42,10 +42,10 @@ local options = {
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-Space>"] = cmp.mapping.complete(),
     ["<C-e>"] = cmp.mapping.close(),
-    ["<CR>"] = cmp.mapping.confirm {
+    ["<CR>"] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
       select = false,
-    },
+    }),
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
@@ -55,9 +55,9 @@ local options = {
         fallback()
       end
     end, {
-        "i",
-        "s",
-      }),
+      "i",
+      "s",
+    }),
     ["<S-Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
@@ -67,9 +67,9 @@ local options = {
         fallback()
       end
     end, {
-        "i",
-        "s",
-      })
+      "i",
+      "s",
+    }),
   },
   sources = {
     { name = "nvim_lsp" },
@@ -77,7 +77,7 @@ local options = {
     { name = "buffer" },
     { name = "nvim_lua" },
     { name = "path" },
-  }
+  },
 }
 
 return options

@@ -1,5 +1,5 @@
 local M = {}
-local utils = require "core.utils"
+local utils = require("core.utils")
 
 local function lspSymbol(name, icon)
   local hl = "DiagnosticSign" .. name
@@ -11,14 +11,14 @@ lspSymbol("Info", "󰋼")
 lspSymbol("Hint", "󰌵")
 lspSymbol("Warn", "")
 
-vim.diagnostic.config {
+vim.diagnostic.config({
   virtual_text = {
     prefix = "",
   },
   signs = true,
   underline = true,
   update_in_insert = false,
-}
+})
 
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
   border = "single",
@@ -56,27 +56,27 @@ M.capabilities.textDocument.completion.completionItem = {
   },
 }
 
-require("lspconfig").lua_ls.setup {
+require("lspconfig").lua_ls.setup({
   on_attach = M.on_attach,
-    capabilities = M.capabilities,
+  capabilities = M.capabilities,
 
-    settings = {
-        Lua = {
+  settings = {
+    Lua = {
       diagnostics = {
         globals = { "vim" },
       },
       workspace = {
         library = {
-          [vim.fn.expand "$VIMRUNTIME/lua"] = true,
-          [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
+          [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+          [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
           -- [vim.fn.stdpath "data" .. "/lazy/extensions/nvchad_types"] = true,
-          [vim.fn.stdpath "data" .. "/lazy/lazy.nvim/lua/lazy"] = true,
+          [vim.fn.stdpath("data") .. "/lazy/lazy.nvim/lua/lazy"] = true,
         },
         maxPreload = 100000,
         preloadFileSize = 10000,
       },
     },
   },
-}
+})
 
 return M

@@ -25,7 +25,7 @@ return {
           require("nvim-autopairs").setup(opts)
 
           -- setup cmp for autopairs
-          local cmp_autopairs = require "nvim-autopairs.completion.cmp"
+          local cmp_autopairs = require("nvim-autopairs.completion.cmp")
           require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
         end,
       },
@@ -40,7 +40,7 @@ return {
       },
     },
     opts = function()
-      return require "plugins.configs.cmp"
+      return require("plugins.configs.cmp")
     end,
     config = function(_, opts)
       require("cmp").setup(opts)
@@ -51,7 +51,7 @@ return {
   {
     "lukas-reineke/indent-blankline.nvim",
     init = function()
-      require("core.utils").lazy_load "indent-blankline.nvim"
+      require("core.utils").lazy_load("indent-blankline.nvim")
     end,
     opts = function()
       return require("plugins.configs.others").blankline
@@ -93,12 +93,12 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     init = function()
-      require("core.utils").lazy_load "nvim-treesitter"
+      require("core.utils").lazy_load("nvim-treesitter")
     end,
     cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
     build = ":TSUpdate",
     opts = function()
-      return require "plugins.configs.treesitter"
+      return require("plugins.configs.treesitter")
     end,
     config = function(_, opts)
       require("nvim-treesitter.configs").setup(opts)
@@ -110,10 +110,10 @@ return {
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPre", "BufNewFile" },
     ft = { "gitcommit", "diff" },
-    opts = function ()
+    opts = function()
       return require("plugins.configs.others").gitsigns
     end,
-    config = function (_, opts)
+    config = function(_, opts)
       require("gitsigns").setup(opts)
     end,
   },
@@ -123,7 +123,7 @@ return {
     "williamboman/mason.nvim",
     cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
     opts = function()
-      return require "plugins.configs.mason"
+      return require("plugins.configs.mason")
     end,
     config = function(_, opts)
       require("mason").setup(opts)
@@ -139,10 +139,10 @@ return {
   {
     "neovim/nvim-lspconfig",
     init = function()
-      require("core.utils").lazy_load "nvim-lspconfig"
+      require("core.utils").lazy_load("nvim-lspconfig")
     end,
     config = function()
-      require "plugins.configs.lspconfig"
+      require("plugins.configs.lspconfig")
     end,
   },
 
@@ -150,10 +150,10 @@ return {
   {
     "numToStr/Comment.nvim",
     key = { "gcc", "gbc" },
-    init = function ()
-      require("core.utils").load_mappings "comment"
+    init = function()
+      require("core.utils").load_mappings("comment")
     end,
-    config = function ()
+    config = function()
       require("Comment").setup()
     end,
   },
@@ -163,10 +163,10 @@ return {
     "nvim-tree/nvim-tree.lua",
     cmd = { "NvimTreeToggle", "NvimTreeFocus" },
     init = function()
-      require("core.utils").load_mappings "nvimtree"
+      require("core.utils").load_mappings("nvimtree")
     end,
     opts = function()
-      return require "plugins.configs.nvimtree"
+      return require("plugins.configs.nvimtree")
     end,
     config = function(_, opts)
       require("nvim-tree").setup(opts)
@@ -178,16 +178,16 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     dependencies = {
-      "nvim-lua/plenary.nvim"
+      "nvim-lua/plenary.nvim",
     },
     cmd = "Telescope",
-    init = function ()
-      require("core.utils").load_mappings "telescope"
+    init = function()
+      require("core.utils").load_mappings("telescope")
     end,
-    opts = function ()
+    opts = function()
       return require("plugins.configs.telescope")
     end,
-    config = function (_, opts)
+    config = function(_, opts)
       local telescope = require("telescope")
       telescope.setup(opts)
 
@@ -195,7 +195,7 @@ return {
       for _, ext in ipairs(opts.extensions_list) do
         telescope.load_extension(ext)
       end
-    end
+    end,
   },
 
   {
@@ -245,7 +245,7 @@ return {
     "folke/which-key.nvim",
     keys = { "<leader>", '"', "`", "c", "v" },
     init = function()
-      require("core.utils").load_mappings "whichkey"
+      require("core.utils").load_mappings("whichkey")
     end,
     config = function(_, opts)
       require("which-key").setup(opts)
@@ -258,7 +258,7 @@ return {
     "goolord/alpha-nvim",
     event = "VimEnter",
     config = function()
-      require("alpha").setup(require"alpha.themes.dashboard".config)
+      require("alpha").setup(require("alpha.themes.dashboard").config)
     end,
   },
   {

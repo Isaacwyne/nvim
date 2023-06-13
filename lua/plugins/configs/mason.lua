@@ -1,10 +1,10 @@
 local options = {
   ensure_installed = { "lua-language-server" }, -- not an option from mason.nvim
 
-    PATH = "skip",
+  PATH = "skip",
 
-    ui = {
-        icons = {
+  ui = {
+    icons = {
       package_pending = " ",
       package_installed = "󰄳 ",
       package_uninstalled = " 󰚌",
@@ -22,7 +22,7 @@ local options = {
     },
   },
 
-    max_concurrent_installers = 10,
+  max_concurrent_installers = 10,
 }
 
 return options

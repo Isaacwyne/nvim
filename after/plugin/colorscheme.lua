@@ -3,7 +3,7 @@ if not present then
   return
 end
 
-onedark.setup {
+onedark.setup({
   -- main options
   style = "dark",
   transparent = true,
@@ -21,15 +21,15 @@ onedark.setup {
 
   -- plugins config
   diagnostics = {
-    darker = true,              -- darker colors for diagnostics
-    undercurl = true,           -- use undercurl instead of underline for diagnostics
-    background = true,          -- use background color for virtual text
+    darker = true, -- darker colors for diagnostics
+    undercurl = true, -- use undercurl instead of underline for diagnostics
+    background = true, -- use background color for virtual text
   },
 
   -- lualine options
   lualine = {
     transparent = true,
   },
-}
+})
 
 onedark.load()

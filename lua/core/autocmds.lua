@@ -74,7 +74,7 @@ autocmd("Filetype", {
   pattern = {
     "text",
     "gitcommit",
-    "markdown"
+    "markdown",
   },
   callback = function()
     vim.opt_local.wrap = true
@@ -88,14 +88,14 @@ autocmd("TermOpen", {
   callback = function()
     vim.opt_local.number = false
     vim.opt_local.relativenumber = false
-  end
+  end,
 })
 
 -- make mason floating windows transparent
 autocmd("Filetype", {
   group = augroup("mason_transparent"),
   pattern = "mason",
-  callback = function ()
+  callback = function()
     vim.opt_local.winblend = 10
   end,
 })

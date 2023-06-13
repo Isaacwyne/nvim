@@ -55,21 +55,21 @@ M.lspconfig = {
       function()
         vim.lsp.buf.definition()
       end,
-      "LSP definition"
+      "LSP definition",
     },
 
     ["K"] = {
       function()
         vim.lsp.buf.hover()
       end,
-      "LSP hover"
+      "LSP hover",
     },
 
     ["gi"] = {
       function()
         vim.lsp.buf.implementation()
       end,
-      "LSP implementation"
+      "LSP implementation",
     },
 
     ["<leader>ls"] = {
@@ -83,7 +83,7 @@ M.lspconfig = {
       function()
         vim.lsp.buf.type_definition()
       end,
-      "LSP definition type"
+      "LSP definition type",
     },
 
     ["<leader>ra"] = {
@@ -109,7 +109,7 @@ M.lspconfig = {
 
     ["<leader>f"] = {
       function()
-        vim.diagnostic.open_float { border = "rounded" }
+        vim.diagnostic.open_float({ border = "rounded" })
       end,
       "Floating diagnostic",
     },
@@ -137,7 +137,7 @@ M.lspconfig = {
 
     ["<leader>fm"] = {
       function()
-        vim.lsp.buf.format { async = true }
+        vim.lsp.buf.format({ async = true })
       end,
       "LSP formatting",
     },
@@ -181,7 +181,7 @@ M.telescope = {
   n = {
     -- find
     ["<leader>ff"] = { "<cmd> Telescope find_files <cr>", "Find files" },
-    ["<leader>fa"]  = { "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <cr>", "Find all" },
+    ["<leader>fa"] = { "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <cr>", "Find all" },
     ["<leader>fw"] = { "<cmd> Telescope live_grep <cr>", "Live grep" },
     ["<leader>fb"] = { "<cmd> Telescope buffers <cr>", "Find buffers" },
     ["<leader>fh"] = { "<cmd> Telescope help_tags<cr>", "Help page" },
@@ -200,7 +200,7 @@ M.comment = {
   -- toggle comment
   n = {
     ["<leader>/"] = {
-      function ()
+      function()
         require("Comment.api").toggle.linewise.current()
       end,
       "Toggle comment",
@@ -210,8 +210,8 @@ M.comment = {
   v = {
     ["<leader>/"] = {
       "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>",
-      "Toggle block comment"
-    }
+      "Toggle block comment",
+    },
   },
 }
 
@@ -221,13 +221,13 @@ M.whichkey = {
   n = {
     ["<leader>wK"] = {
       function()
-        vim.cmd "WhichKey"
+        vim.cmd("WhichKey")
       end,
       "Which-key all keymaps",
     },
     ["<leader>wk"] = {
       function()
-        local input = vim.fn.input "WhichKey: "
+        local input = vim.fn.input("WhichKey: ")
         vim.cmd("WhichKey " .. input)
       end,
       "Which-key query lookup",
@@ -244,11 +244,11 @@ M.blankline = {
         local ok, start = require("indent_blankline.utils").get_current_context(
           vim.g.indent_blankline_context_patterns,
           vim.g.indent_blankline_use_treesitter_scope
-          )
+        )
 
         if ok then
-            vim.api.nvim_win_set_cursor(vim.api.nvim_get_current_win(), { start, 0 })
-          vim.cmd [[normal! _]]
+          vim.api.nvim_win_set_cursor(vim.api.nvim_get_current_win(), { start, 0 })
+          vim.cmd([[normal! _]])
         end
       end,
 
@@ -265,13 +265,13 @@ M.gitsigns = {
     ["]c"] = {
       function()
         if vim.wo.diff then
-            return "]c"
-          end
+          return "]c"
+        end
         vim.schedule(function()
           require("gitsigns").next_hunk()
         end)
         return "<Ignore>"
-        end,
+      end,
       "Jump to next hunk",
       opts = { expr = true },
     },
@@ -279,13 +279,13 @@ M.gitsigns = {
     ["[c"] = {
       function()
         if vim.wo.diff then
-            return "[c"
-          end
+          return "[c"
+        end
         vim.schedule(function()
           require("gitsigns").prev_hunk()
         end)
         return "<Ignore>"
-        end,
+      end,
       "Jump to prev hunk",
       opts = { expr = true },
     },

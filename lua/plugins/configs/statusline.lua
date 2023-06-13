@@ -4,14 +4,15 @@
 --- @param no_ellipsis boolean whether to disable adding '...' at end after truncation
 --- return function that can format the component accordingly
 local function trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
-    return function(str)
+  return function(str)
     local win_width = vim.fn.winwidth(0)
-    if hide_width and win_width < hide_width then return ''
-      elseif trunc_width and trunc_len and win_width < trunc_width and #str > trunc_len then
-       return str:sub(1, trunc_len) .. (no_ellipsis and '' or '...')
+    if hide_width and win_width < hide_width then
+      return ""
+    elseif trunc_width and trunc_len and win_width < trunc_width and #str > trunc_len then
+      return str:sub(1, trunc_len) .. (no_ellipsis and "" or "...")
     end
     return str
-    end
+  end
 end
 
 local opts = {
@@ -22,7 +23,7 @@ local opts = {
     component_separators = "",
     disabled_filetypes = {
       statusline = { "dashboard", "alpha" },
-      winbar = {}
+      winbar = {},
     },
     ignore_focus = {},
     always_divide_middle = true,
@@ -35,37 +36,39 @@ local opts = {
   },
   sections = {
     lualine_a = {
-      {"mode", fmt=trunc(80, 4, nil, true) },
+      { "mode", fmt = trunc(80, 4, nil, true) },
     },
     lualine_b = { "branch" },
     lualine_c = {
       {
         "filename",
-        fmt=trunc(90, 30, 50, true),
+        fmt = trunc(90, 30, 50, true),
         file_status = true,
         path = 0,
-      }
+      },
     },
     lualine_x = {
       "diagnostics",
       "encoding",
       "fileformat",
-      "filetype"
+      "filetype",
     },
-    lualine_y = {"progress"},
-    lualine_z = {"location"},
+    lualine_y = { "progress" },
+    lualine_z = { "location" },
   },
   inactive_sections = {
     lualine_a = {},
     lualine_b = {},
-    lualine_c = { {
-      'filename',
-      file_status = true,
-      path = 1                --- relative-path
-    } },
-    lualine_x = {'location'},
+    lualine_c = {
+      {
+        "filename",
+        file_status = true,
+        path = 1, --- relative-path
+      },
+    },
+    lualine_x = { "location" },
     lualine_y = {},
-    lualine_z = {}
+    lualine_z = {},
   },
   tabline = {},
   winbar = {},
