@@ -7,6 +7,10 @@ M.general = {
     ["k"] = { "v:count == 0 ? 'gk' : 'k'", "Move down", opts = { expr = true } },
     ["<leader>b"] = { "<cmd> enew<cr>", "New buffer" },
 
+    -- buffer navigation
+    ["[b"] = { "<cmd>bprev<cr>", "Goto previous buffer" },
+    ["]b"] = { "<cmd>bnext<cr>", "Goto next buffer" },
+
     ["x"] = { '"_x' },
     ["<leader>x"] = { "<cmd> bdelete<cr>", "Close current buffer" },
 
