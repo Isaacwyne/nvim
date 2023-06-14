@@ -56,7 +56,9 @@ M.capabilities.textDocument.completion.completionItem = {
   },
 }
 
-require("lspconfig").lua_ls.setup({
+local lspconfig = require("lspconfig")
+
+lspconfig.lua_ls.setup({
   on_attach = M.on_attach,
   capabilities = M.capabilities,
 
@@ -75,6 +77,16 @@ require("lspconfig").lua_ls.setup({
         maxPreload = 100000,
         preloadFileSize = 10000,
       },
+    },
+  },
+})
+
+lspconfig.bashls.setup({
+  on_attach = M.on_attach,
+  capabilities = M.capabilities,
+  settings = {
+    bashIde = {
+      globPattern = "*@(.sh|.inc|.bash|.command)"
     },
   },
 })

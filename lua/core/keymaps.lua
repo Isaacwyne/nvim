@@ -28,6 +28,16 @@ M.general = {
     ["<leader>wd"] = { "<C-W>c", "Delete window" },
     ["<leader>-"] = { "<C-W>s", "Split below" },
     ["<leader>\\"] = { "<C-W>v", "Split right" },
+
+    ["<leader>1"] = { "<cmd>lua require('bufferline').go_to(1, true)<cr>"},
+    ["<leader>2"] = { "<cmd>lua require('bufferline').go_to(2, true)<cr>"},
+    ["<leader>3"] = { "<cmd>lua require('bufferline').go_to(3, true)<cr>"},
+    ["<leader>4"] = { "<cmd>lua require('bufferline').go_to(4, true)<cr>"},
+    ["<leader>5"] = { "<cmd>lua require('bufferline').go_to(5, true)<cr>"},
+    ["<leader>6"] = { "<cmd>lua require('bufferline').go_to(6, true)<cr>"},
+    ["<leader>7"] = { "<cmd>lua require('bufferline').go_to(7, true)<cr>"},
+    ["<leader>8"] = { "<cmd>lua require('bufferline').go_to(8, true)<cr>"},
+    ["<leader>9"] = { "<cmd>lua require('bufferline').go_to(9, true)<cr>"},
   },
 
   v = {

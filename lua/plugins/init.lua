@@ -25,7 +25,7 @@ return {
           require("nvim-autopairs").setup(opts)
 
           -- setup cmp for autopairs
-          local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+          local cmp_autopairs = require "nvim-autopairs.completion.cmp"
           require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
         end,
       },
@@ -40,7 +40,7 @@ return {
       },
     },
     opts = function()
-      return require("plugins.configs.cmp")
+      return require "plugins.configs.cmp"
     end,
     config = function(_, opts)
       require("cmp").setup(opts)
@@ -52,7 +52,7 @@ return {
   {
     "lukas-reineke/indent-blankline.nvim",
     init = function()
-      require("core.utils").lazy_load("indent-blankline.nvim")
+      require("core.utils").lazy_load "indent-blankline.nvim"
     end,
     opts = function()
       return require("plugins.configs.others").blankline
@@ -102,7 +102,7 @@ return {
         local opts = require("lazy.core.plugin").values(plugin, "opts", false)
         local enabled = false
         if opts.textobjects then
-          for _, mod in ipairs({ "move", "select", "swap", "lsp_interop" }) do
+          for _, mod in ipairs { "move", "select", "swap", "lsp_interop" } do
             if opts.textobjects[mod] and opts.textobjects[mod].enable then
               enabled = true
               break
@@ -110,17 +110,17 @@ return {
           end
         end
         if not enabled then
-          require("lazy.core.loader").disable_rtp_plugin("nvim-treesitter-textobjects")
+          require("lazy.core.loader").disable_rtp_plugin "nvim-treesitter-textobjects"
         end
       end,
     },
     init = function()
-      require("core.utils").lazy_load("nvim-treesitter")
+      require("core.utils").lazy_load "nvim-treesitter"
     end,
     cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
     build = ":TSUpdate",
     opts = function()
-      return require("plugins.configs.treesitter")
+      return require "plugins.configs.treesitter"
     end,
     config = function(_, opts)
       require("nvim-treesitter.configs").setup(opts)
@@ -147,12 +147,11 @@ return {
     "williamboman/mason.nvim",
     cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
     opts = function()
-      return require("plugins.configs.mason")
+      return require "plugins.configs.mason"
     end,
     config = function(_, opts)
       require("mason").setup(opts)
 
-      -- custom nvchad cmd to install all mason binaries listed
       vim.api.nvim_create_user_command("MasonInstallAll", function()
         vim.cmd("MasonInstall " .. table.concat(opts.ensure_installed, " "))
       end, {})
@@ -164,10 +163,10 @@ return {
   {
     "neovim/nvim-lspconfig",
     init = function()
-      require("core.utils").lazy_load("nvim-lspconfig")
+      require("core.utils").lazy_load "nvim-lspconfig"
     end,
     config = function()
-      require("plugins.configs.lspconfig")
+      require "plugins.configs.lspconfig"
     end,
   },
 
@@ -176,7 +175,7 @@ return {
     "numToStr/Comment.nvim",
     key = { "gcc", "gbc" },
     init = function()
-      require("core.utils").load_mappings("comment")
+      require("core.utils").load_mappings "comment"
     end,
     config = function()
       require("Comment").setup()
@@ -192,10 +191,10 @@ return {
     },
     cmd = { "NvimTreeToggle", "NvimTreeFocus" },
     init = function()
-      require("core.utils").load_mappings("nvimtree")
+      require("core.utils").load_mappings "nvimtree"
     end,
     opts = function()
-      return require("plugins.configs.nvimtree")
+      return require "plugins.configs.nvimtree"
     end,
     config = function(_, opts)
       require("nvim-tree").setup(opts)
@@ -212,13 +211,13 @@ return {
     },
     cmd = "Telescope",
     init = function()
-      require("core.utils").load_mappings("telescope")
+      require("core.utils").load_mappings "telescope"
     end,
     opts = function()
-      return require("plugins.configs.telescope")
+      return require "plugins.configs.telescope"
     end,
     config = function(_, opts)
-      local telescope = require("telescope")
+      local telescope = require "telescope"
       telescope.setup(opts)
 
       -- load extension
@@ -242,7 +241,7 @@ return {
     "nvim-lualine/lualine.nvim",
     lazy = false,
     opts = function()
-      return require("plugins.configs.statusline")
+      return require "plugins.configs.statusline"
     end,
     config = function(_, opts)
       require("lualine").setup(opts)
@@ -255,8 +254,9 @@ return {
     "akinsho/bufferline.nvim",
     lazy = false,
     config = function()
-      require("bufferline").setup({
+      require("bufferline").setup {
         options = {
+          numbers = "ordinal",
           diagnostics = "nvim_lsp",
           offsets = {
             {
@@ -267,7 +267,7 @@ return {
             },
           },
         },
-      })
+      }
     end,
   },
   -- }}}
@@ -277,7 +277,7 @@ return {
     "folke/which-key.nvim",
     keys = { "<leader>", '"', "`", "c", "v" },
     init = function()
-      require("core.utils").load_mappings("whichkey")
+      require("core.utils").load_mappings "whichkey"
     end,
     config = function(_, opts)
       require("which-key").setup(opts)
@@ -292,7 +292,7 @@ return {
     "goolord/alpha-nvim",
     event = "VimEnter",
     opts = function()
-      return require("plugins.configs.greeter")
+      return require "plugins.configs.greeter"
     end,
     config = function(_, dashboard)
       if vim.o.filetype == "lazy" then
@@ -314,7 +314,7 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     dependencies = { "mason.nvim" },
     opts = function()
-      local nls = require("null-ls")
+      local nls = require "null-ls"
       return {
         root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
         sources = {
