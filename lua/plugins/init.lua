@@ -1,5 +1,5 @@
 return {
-  -- load luasnips + cmp related in insert mode only
+  -- load luasnips + cmp related in insert mode only {{{
   {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
@@ -46,8 +46,9 @@ return {
       require("cmp").setup(opts)
     end,
   },
+  -- }}}
 
-  -- indentline
+  -- indentline {{{
   {
     "lukas-reineke/indent-blankline.nvim",
     init = function()
@@ -60,12 +61,13 @@ return {
       require("indent_blankline").setup(opts)
     end,
   },
+  -- }}}
+
   {
     "echasnovski/mini.indentscope",
     version = false, -- wait till new 0.7.0 release to put it back on semver
     event = { "BufReadPre", "BufNewFile" },
     opts = {
-      -- symbol = "▏",
       symbol = "│",
       options = { try_as_border = true },
     },
@@ -90,8 +92,28 @@ return {
     end,
   },
 
+  -- treesitter {{{
   {
     "nvim-treesitter/nvim-treesitter",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+      init = function()
+        local plugin = require("lazy.core.config").spec.plugins["nvim-treesitter"]
+        local opts = require("lazy.core.plugin").values(plugin, "opts", false)
+        local enabled = false
+        if opts.textobjects then
+          for _, mod in ipairs({ "move", "select", "swap", "lsp_interop" }) do
+            if opts.textobjects[mod] and opts.textobjects[mod].enable then
+              enabled = true
+              break
+            end
+          end
+        end
+        if not enabled then
+          require("lazy.core.loader").disable_rtp_plugin("nvim-treesitter-textobjects")
+        end
+      end,
+    },
     init = function()
       require("core.utils").lazy_load("nvim-treesitter")
     end,
@@ -104,8 +126,9 @@ return {
       require("nvim-treesitter.configs").setup(opts)
     end,
   },
+  -- }}}
 
-  -- gitsigns
+  -- gitsigns {{{
   {
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPre", "BufNewFile" },
@@ -117,8 +140,9 @@ return {
       require("gitsigns").setup(opts)
     end,
   },
+  -- }}}
 
-  -- lsp stuff
+  -- lsp stuff {{{
   {
     "williamboman/mason.nvim",
     cmd = { "Mason", "MasonInstall", "MasonInstallAll", "MasonUninstall", "MasonUninstallAll", "MasonLog" },
@@ -135,6 +159,7 @@ return {
       vim.g.mason_binaries_list = opts.ensure_installed
     end,
   },
+  -- }}}
 
   {
     "neovim/nvim-lspconfig",
@@ -146,7 +171,7 @@ return {
     end,
   },
 
-  -- comments
+  -- comments {{{
   {
     "numToStr/Comment.nvim",
     key = { "gcc", "gbc" },
@@ -157,10 +182,14 @@ return {
       require("Comment").setup()
     end,
   },
+  -- }}}
 
-  -- file managing, picker etc
+  -- file managing, picker etc {{{
   {
     "nvim-tree/nvim-tree.lua",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
     cmd = { "NvimTreeToggle", "NvimTreeFocus" },
     init = function()
       require("core.utils").load_mappings("nvimtree")
@@ -173,8 +202,9 @@ return {
       vim.g.nvimtree_side = opts.view.side
     end,
   },
+  -- }}}
 
-  -- Telescope
+  -- Telescope {{{
   {
     "nvim-telescope/telescope.nvim",
     dependencies = {
@@ -197,6 +227,7 @@ return {
       end
     end,
   },
+  -- }}}
 
   {
     "folke/todo-comments.nvim",
@@ -206,7 +237,7 @@ return {
     end,
   },
 
-  -- statusline
+  -- statusline {{{
   {
     "nvim-lualine/lualine.nvim",
     lazy = false,
@@ -217,15 +248,15 @@ return {
       require("lualine").setup(opts)
     end,
   },
+  -- }}}
 
-  -- bufferline
+  -- bufferline {{{
   {
     "akinsho/bufferline.nvim",
     lazy = false,
     config = function()
       require("bufferline").setup({
         options = {
-          numbers = "ordinal",
           diagnostics = "nvim_lsp",
           offsets = {
             {
@@ -239,8 +270,9 @@ return {
       })
     end,
   },
+  -- }}}
 
-  -- only load whichkey after all the gui
+  -- only load whichkey after all the gui {{{
   {
     "folke/which-key.nvim",
     keys = { "<leader>", '"', "`", "c", "v" },
@@ -251,16 +283,32 @@ return {
       require("which-key").setup(opts)
     end,
   },
+  -- }}}
 
   "navarasu/onedark.nvim",
-  "nvim-tree/nvim-web-devicons",
+
+  -- greeter (welcome) {{{
   {
     "goolord/alpha-nvim",
     event = "VimEnter",
-    config = function()
-      require("alpha").setup(require("alpha.themes.dashboard").config)
+    opts = function()
+      return require("plugins.configs.greeter")
+    end,
+    config = function(_, dashboard)
+      if vim.o.filetype == "lazy" then
+        vim.cmd.close()
+        vim.api.nvim_create_autocmd("User", {
+          pattern = "AlphaReady",
+          callback = function()
+            require("lazy").show()
+          end,
+        })
+      end
+      require("alpha").setup(dashboard.opts)
     end,
   },
+  -- }}}
+
   {
     "jose-elias-alvarez/null-ls.nvim",
     event = { "BufReadPre", "BufNewFile" },

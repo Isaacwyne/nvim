@@ -4,44 +4,46 @@ local augroup = function(name)
   return vim.api.nvim_create_augroup(name, { clear = true })
 end
 
--- check if we need to reload the file when it's changed
+-- check if we need to reload the file when it's changed {{{
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
   group = augroup("checktime"),
   command = "checktime",
 })
+-- }}}
 
--- resize splits if window got resized
+-- resize splits if window got resized {{{
 vim.api.nvim_create_autocmd({ "VimResized" }, {
   group = augroup("resize_splits"),
   callback = function()
     vim.cmd("tabdo wincmd =")
   end,
 })
+-- }}}
 
--- highlight on yank
+-- highlight on yank {{{
 autocmd("TextYankPost", {
   group = augroup("highlight_yank"),
   callback = function()
-    vim.highlight.on_yank({
-      higroup = "IncSearch",
-      timeout = 40,
-    })
+    vim.highlight.on_yank()
   end,
 })
+-- }}}
 
--- don't auto comment newlines
+-- don't auto comment newlines {{{
 autocmd("BufEnter", {
   group = augroup("auto_comment"),
   command = "set fo-=c fo-=r fo-=o",
 })
+-- }}}
 
--- auto-remove trailing whitespace
+-- auto-remove trailing whitespace {{{
 autocmd("BufWritePre", {
   group = augroup("whitespace"),
   command = "%s/\\s\\+$//e",
 })
+-- }}}
 
--- go to the last location when opening a buffer
+-- go to the last location when opening a buffer {{{
 autocmd("BufReadPost", {
   group = augroup("last_loc"),
   callback = function()
@@ -52,23 +54,22 @@ autocmd("BufReadPost", {
     end
   end,
 })
+-- }}}
 
--- close some filetypes with <q>
+-- close some filetypes with <q> {{{
 autocmd("Filetype", {
   group = augroup("close_with_q"),
-  pattern = {
-    "help",
-    "lspinfo",
-    "man",
-    "tsplayground",
-  },
   callback = function(event)
-    vim.bo[event.buf].buflisted = false
-    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+    local filetype = vim.api.nvim_get_option_value("filetype", { buf = event.buf })
+    local buftype = vim.api.nvim_get_option_value("buftype", { buf = event.buf })
+    if buftype == "nofile" or filetype == "help" then
+      vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true, nowait = true })
+    end
   end,
 })
+-- }}}
 
--- wrap and check for spell in text filetype
+-- wrap and check for spell in text filetype {{{
 autocmd("Filetype", {
   group = augroup("wrap_spell"),
   pattern = {
@@ -81,8 +82,9 @@ autocmd("Filetype", {
     vim.opt_local.spell = true
   end,
 })
+-- }}}
 
--- terminal options
+-- terminal options {{{
 autocmd("TermOpen", {
   group = augroup("terminal_opts"),
   callback = function()
@@ -90,12 +92,13 @@ autocmd("TermOpen", {
     vim.opt_local.relativenumber = false
   end,
 })
+-- }}}
 
--- make mason floating windows transparent
-autocmd("Filetype", {
-  group = augroup("mason_transparent"),
-  pattern = "mason",
+autocmd("FileType", {
+  desc = "Unlist quickfist buffers",
+  group = augroup("unlist_quickfist"),
+  pattern = "qf",
   callback = function()
-    vim.opt_local.winblend = 10
+    vim.opt_local.buflisted = false
   end,
 })

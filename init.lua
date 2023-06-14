@@ -25,6 +25,7 @@ vim.opt.runtimepath:prepend(lazypath)
 
 require("lazy").setup("plugins", {
   performance = {
+    -- disable some neovim plugins {{{
     rtp = {
       disabled_plugins = {
         "2html_plugin",
@@ -56,6 +57,7 @@ require("lazy").setup("plugins", {
         "ftplugin",
       },
     },
+    -- }}}
   },
 
   defaults = {
