@@ -1,5 +1,13 @@
 local options = {
-  ensure_installed = { "lua-language-server" }, -- not an option from mason.nvim
+  ensure_installed = {
+    "autopep8",
+    "pylint",
+    "stylua",
+    "lua-language-server",
+    "prettierd",
+    "bash-language-server",
+    "python-lsp-server",
+  }, -- not an option from mason.nvim
 
   PATH = "skip",
 
