@@ -1,5 +1,5 @@
 local cmp = require("cmp")
-local kind_icons = require("core.utils").lspkind
+local utils = require("core.utils")
 
 local function border(hl_name)
   return {
@@ -21,7 +21,8 @@ local options = {
 
   window = {
     completion = {
-      winhighlight = "Normal:CmpPmenu,CursorLine:CmpSel,Search:PmenuSel",
+      side_padding = 1 or 0,
+      winhighlight = "Normal:Normal,CursorLine:PmenuSel,Search:None",
       scrollbar = false,
     },
     documentation = {
@@ -36,19 +37,11 @@ local options = {
   },
 
   formatting = {
-    format = function(entry, vim_item)
-      -- Kind icons
-      vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
-      -- Source
-      vim_item.menu = ({
-        buffer = "[Buffer]",
-        nvim_lsp = "[LSP]",
-        luasnip = "[LuaSnip]",
-        nvim_lua = "[Lua]",
-        latex_symbols = "[LaTeX]",
-      })[entry.source.name]
-      return vim_item
-    end
+    format = function(_, item)
+      local icons = " " .. (utils.lspkind[item.kind] or '') .. " "
+      item.kind = icons .. item.kind
+      return item
+    end,
   },
 
   mapping = {
@@ -58,11 +51,11 @@ local options = {
     ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-Space>"] = cmp.mapping.complete(),
     ["<C-e>"] = cmp.mapping.close(),
-    ["<CR>"] = cmp.mapping.confirm({
+    ["<C-y>"] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
       select = false,
     }),
-    ["<Tab>"] = cmp.mapping(function(fallback)
+    ["<C-k>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
       elseif require("luasnip").expand_or_jumpable() then
@@ -74,7 +67,7 @@ local options = {
       "i",
       "s",
     }),
-    ["<S-Tab>"] = cmp.mapping(function(fallback)
+    ["<C-j>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
       elseif require("luasnip").jumpable(-1) then
