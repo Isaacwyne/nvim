@@ -14,22 +14,6 @@ return {
         end,
       },
 
-      -- autopairing of (){}[] etc
-      {
-        "windwp/nvim-autopairs",
-        opts = {
-          fast_wrap = {},
-          disable_filetype = { "TelescopePrompt", "vim" },
-        },
-        config = function(_, opts)
-          require("nvim-autopairs").setup(opts)
-
-          -- setup cmp for autopairs
-          local cmp_autopairs = require "nvim-autopairs.completion.cmp"
-          require("cmp").event:on("confirm_done", cmp_autopairs.on_confirm_done())
-        end,
-      },
-
       -- cmp sources plugins
       {
         "saadparwaiz1/cmp_luasnip",
@@ -51,9 +35,7 @@ return {
   -- indentline {{{
   {
     "lukas-reineke/indent-blankline.nvim",
-    init = function()
-      require("core.utils").lazy_load "indent-blankline.nvim"
-    end,
+    event = { "BufReadPost", "BufNewFile" },
     opts = function()
       return require("plugins.configs.others").blankline
     end,
@@ -63,62 +45,20 @@ return {
   },
   -- }}}
 
-  {
-    "echasnovski/mini.indentscope",
-    version = false, -- wait till new 0.7.0 release to put it back on semver
-    event = { "BufReadPre", "BufNewFile" },
-    opts = {
-      symbol = "│",
-      options = { try_as_border = true },
-    },
-    init = function()
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = {
-          "help",
-          "alpha",
-          "dashboard",
-          "neo-tree",
-          "Trouble",
-          "lazy",
-          "mason",
-          "notify",
-          "toggleterm",
-          "lazyterm",
-        },
-        callback = function()
-          vim.b.miniindentscope_disable = true
-        end,
-      })
-    end,
-  },
-
   -- treesitter {{{
   {
     "nvim-treesitter/nvim-treesitter",
+    version = false,
+    build = ":TSUpdate",
+    event = { "BufReadPost", "BufNewFile" },
     dependencies = {
       "nvim-treesitter/nvim-treesitter-textobjects",
       init = function()
-        local plugin = require("lazy.core.config").spec.plugins["nvim-treesitter"]
-        local opts = require("lazy.core.plugin").values(plugin, "opts", false)
-        local enabled = false
-        if opts.textobjects then
-          for _, mod in ipairs { "move", "select", "swap", "lsp_interop" } do
-            if opts.textobjects[mod] and opts.textobjects[mod].enable then
-              enabled = true
-              break
-            end
-          end
-        end
-        if not enabled then
-          require("lazy.core.loader").disable_rtp_plugin "nvim-treesitter-textobjects"
-        end
+        require("lazy.core.loader").disable_rtp_plugin "nvim-treesitter-textobjects"
+        load_textobjects = true
       end,
     },
-    init = function()
-      require("core.utils").lazy_load "nvim-treesitter"
-    end,
-    cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
-    build = ":TSUpdate",
+    cmd = { "TSUpdateSync" },
     opts = function()
       return require "plugins.configs.treesitter"
     end,
@@ -158,6 +98,11 @@ return {
       vim.g.mason_binaries_list = opts.ensure_installed
     end,
   },
+
+  {
+    "lambdalisue/suda.vim",
+    cmd = { "SudaWrite", "SudaRead" },
+  },
   -- }}}
 
   {
@@ -171,16 +116,16 @@ return {
   },
 
   -- comments {{{
-  {
+  --[[ {
     "numToStr/Comment.nvim",
-    key = { "gcc", "gbc" },
-    init = function()
-      require("core.utils").load_mappings "comment"
+    keys = { "gc", "gb" },
+    opts = function()
+      return require("plugins.configs.others").comment
     end,
     config = function()
       require("Comment").setup()
     end,
-  },
+  }, ]]
   -- }}}
 
   -- file managing, picker etc {{{
@@ -236,6 +181,26 @@ return {
     end,
   },
 
+  -- mini.nvim {{{
+  { "JoosepAlviste/nvim-ts-context-commentstring", lazy = true },
+  {
+    "echasnovski/mini.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("mini.indentscope").setup()
+      require("mini.pairs").setup()
+      require("mini.surround").setup()
+      require("mini.comment").setup {
+        options = {
+          custom_commentstring = function()
+            return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
+          end,
+        },
+      }
+    end,
+  },
+  -- }}}
+
   -- statusline {{{
   {
     "nvim-lualine/lualine.nvim",
@@ -253,29 +218,19 @@ return {
   {
     "akinsho/bufferline.nvim",
     lazy = false,
-    config = function()
-      require("bufferline").setup {
-        options = {
-          numbers = "ordinal",
-          diagnostics = "nvim_lsp",
-          offsets = {
-            {
-              filetype = "NvimTree",
-              text = "File Explorer",
-              highlight = "Directory",
-              text_align = "center",
-            },
-          },
-        },
-      }
+    opts = function()
+      return require("plugins.configs.others").bufferline
+    end,
+    config = function(_, opts)
+      require("bufferline").setup(opts)
     end,
   },
   -- }}}
 
-  -- only load whichkey after all the gui {{{
+  -- vim which-key {{{
   {
     "folke/which-key.nvim",
-    keys = { "<leader>", '"', "`", "c", "v" },
+    event = "VimEnter",
     init = function()
       require("core.utils").load_mappings "whichkey"
     end,
@@ -285,14 +240,18 @@ return {
   },
   -- }}}
 
-  "navarasu/onedark.nvim",
+  -- colorscheme {{{
   {
-    "norcalli/nvim-colorizer.lua",
-    event = "BufRead",
-    config = function()
-      require("colorizer").setup()
-    end,
+    "navarasu/onedark.nvim",
+    dependencies = {
+      "norcalli/nvim-colorizer.lua",
+      event = "BufRead",
+      config = function()
+        require("colorizer").setup()
+      end,
+    },
   },
+  -- }}}
 
   -- greeter (welcome) {{{
   {
@@ -316,6 +275,7 @@ return {
   },
   -- }}}
 
+  -- null-ls {{{
   {
     "jose-elias-alvarez/null-ls.nvim",
     event = { "BufReadPre", "BufNewFile" },
@@ -325,16 +285,17 @@ return {
       return {
         root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
         sources = {
-          -- nls.builtins.formatting.fish_indent,
-          -- nls.builtins.diagnostics.fish,
+          nls.builtins.formatting.black,
           nls.builtins.formatting.prettierd,
           nls.builtins.formatting.stylua,
           nls.builtins.formatting.shfmt,
-          nls.builtins.formatting.autopep8,
           nls.builtins.formatting.jq,
           nls.builtins.code_actions.gitsigns,
+          nls.builtins.diagnostics.mypy,
+          nls.builtins.diagnostics.ruff,
         },
       }
     end,
   },
 }
+-- }}}

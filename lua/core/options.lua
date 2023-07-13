@@ -41,6 +41,7 @@ opt.splitright = true
 opt.termguicolors = true
 opt.timeoutlen = 400
 opt.undofile = true
+opt.writebackup = false
 
 -- folds
 opt.foldmethod = "marker"

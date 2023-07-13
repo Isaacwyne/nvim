@@ -1,11 +1,13 @@
 local options = {
   ensure_installed = {
-    "autopep8",
+    "black",
+    "mypy",
+    "ruff",
+    "shfmt",
     "pylint",
     "stylua",
     "lua-language-server",
     "prettierd",
-    "bash-language-server",
     "python-lsp-server",
   }, -- not an option from mason.nvim
 

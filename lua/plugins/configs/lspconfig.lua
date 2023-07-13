@@ -13,11 +13,14 @@ lspSymbol("Warn", "")
 
 vim.diagnostic.config({
   virtual_text = {
+    spacing = 4,
+    source = "if_many",
     prefix = "",
   },
   signs = true,
   underline = true,
   update_in_insert = false,
+  severity_sort = true,
 })
 
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
@@ -38,6 +41,7 @@ utils.load_mappings("lspconfig", { buffer = bufnr })
 
 M.capabilities = vim.lsp.protocol.make_client_capabilities()
 
+-- capabilities {{{
 M.capabilities.textDocument.completion.completionItem = {
   documentationFormat = { "markdown", "plaintext" },
   snippetSupport = true,
@@ -55,9 +59,11 @@ M.capabilities.textDocument.completion.completionItem = {
     },
   },
 }
+-- }}}
 
 local lspconfig = require("lspconfig")
 
+-- lua-luaguage-server {{{
 lspconfig.lua_ls.setup({
   on_attach = M.on_attach,
   capabilities = M.capabilities,
@@ -65,7 +71,14 @@ lspconfig.lua_ls.setup({
   settings = {
     Lua = {
       diagnostics = {
-        globals = { "vim" },
+        globals = {
+          "vim",
+          "describe",
+          "it",
+          "before_each",
+          "after_each",
+          "packer_plugins",
+        },
       },
       workspace = {
         library = {
@@ -80,13 +93,17 @@ lspconfig.lua_ls.setup({
     },
   },
 })
+-- }}}
 
-lspconfig.bashls.setup({
-  on_attach = M.on_attach,
-  capabilities = M.capabilities,
+lspconfig.pylsp.setup({
   settings = {
-    bashIde = {
-      globPattern = "*@(.sh|.inc|.bash|.command)"
+    pylsp = {
+      plugins = {
+        pycodestyle = {
+          ignore = {'W391'},
+          maxLineLength = 100
+        },
+      },
     },
   },
 })

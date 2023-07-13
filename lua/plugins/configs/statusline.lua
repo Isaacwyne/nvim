@@ -22,7 +22,11 @@ local opts = {
     section_separators = "",
     component_separators = "",
     disabled_filetypes = {
-      statusline = { "dashboard", "alpha" },
+      statusline = {
+        "dashboard",
+        "alpha",
+        "man",
+      },
       winbar = {},
     },
     ignore_focus = {},
