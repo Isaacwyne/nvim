@@ -5,7 +5,7 @@ M.general = {
     -- better up/down navigation
     ["j"] = { "v:count == 0 ? 'gj' : 'j'", "Move up", opts = { expr = true } },
     ["k"] = { "v:count == 0 ? 'gk' : 'k'", "Move down", opts = { expr = true } },
-    ["<leader>b"] = { "<cmd> enew<cr>", "New buffer" },
+    ["<leader>n"] = { "<cmd> enew<cr>", "New buffer" },
 
     -- buffer navigation
     ["[b"] = { "<cmd>bprev<cr>", "Goto previous buffer" },
@@ -13,6 +13,7 @@ M.general = {
 
     ["x"] = { '"_x' },
     ["<leader>x"] = { "<cmd> bdelete<cr>", "Close current buffer" },
+    ["<leader>lz"] = { "<cmd> Lazy<cr>", "Open lazy" },
 
     -- copy & paste to & from system clipboard ('+' register)
     ["<leader>y"] = { [["+y]], "Yank to system clipboard" },
@@ -75,7 +76,7 @@ M.lspconfig = {
       "LSP hover",
     },
 
-    ["gi"] = {
+    ["<leader>gi"] = {
       function()
         vim.lsp.buf.implementation()
       end,
@@ -201,27 +202,6 @@ M.telescope = {
     -- git
     ["<leader>cm"] = { "<cmd> Telescope git_commits<cr>", "Git commits" },
     ["<leader>gt"] = { "<cmd> Telescope git_status<cr>", "Git status" },
-  },
-}
-
-M.comment = {
-  plugin = true,
-
-  -- toggle comment
-  n = {
-    ["<leader>/"] = {
-      function()
-        require("Comment.api").toggle.linewise.current()
-      end,
-      "Toggle comment",
-    },
-  },
-
-  v = {
-    ["<leader>/"] = {
-      "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>",
-      "Toggle block comment",
-    },
   },
 }
 
