@@ -4,6 +4,35 @@ local augroup = function(name)
   return vim.api.nvim_create_augroup(name, { clear = true })
 end
 
+-- Reload neovim config {{{
+vim.api.nvim_create_user_command("ReloadConfig", function ()
+  for name, _ in pairs(package.loaded) do
+    if name:match('^plugins') then
+      package.loaded[name] = nil
+    end
+  end
+
+  dofile(vim.env.MYVIMRC)
+  vim.notify("Nvim configuration reloaded!", vim.log.levels.INFO)
+end, {})
+-- }}}
+
+-- copy absolute path {{{
+vim.api.nvim_create_user_command("CApath", function ()
+    local path = vim.fn.expand("%:p")
+    vim.fn.setreg("+", path)
+    vim.notify('Copied "' .. path .. '" to the clipboard!')
+end, {})
+-- }}}
+
+-- copy relative path {{{
+vim.api.nvim_create_user_command("CRpath", function ()
+  local path = vim.fn.expand("%")
+  vim.fn.setreg("+", path)
+  vim.notify('Copied "' .. path .. '" to the clipboard!')
+end, {})
+-- }}}
+
 -- check if we need to reload the file when it's changed {{{
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
   group = augroup "checktime",

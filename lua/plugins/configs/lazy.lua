@@ -85,6 +85,21 @@ local plugins = {
 
   -- Tools
   {
+    "ThePrimeagen/harpoon",
+    event = { "VeryLazy" },
+    config = function()
+      local mark = require("harpoon.mark")
+      local ui = require("harpoon.ui")
+      vim.keymap.set("n", "<leader>ma", mark.add_file, { desc = "Harpoon: Mark File"})
+      vim.keymap.set("n", "<leader><leader>f", ui.toggle_quick_menu, { desc = "Toggle Harpoon Menu" })
+      vim.keymap.set("n", "<C-t>", function() ui.nav_file(1) end, { desc = "Harpoon File 1"})
+      vim.keymap.set("n", "<C-s>", function() ui.nav_file(2) end, { desc = "Harpoon File 2"})
+      vim.keymap.set("n", "<C-b>", function() ui.nav_file(3) end, { desc = "Harpoon File 3"})
+      vim.keymap.set("n", "<C-g>", function() ui.nav_file(4) end, { desc = "Harpoon File 4"})
+    end
+  },
+
+  {
     "neovim/nvim-lspconfig",
     event = { "BufRead", "BufWinEnter", "BufNewFile" },
     config = function()
@@ -202,6 +217,7 @@ local plugins = {
       return require("plugins.configs.ui").blankline
     end,
     config = function(_, opts)
+      require("core.utils").load_mappings "blankline"
       require("indent_blankline").setup(opts)
     end,
   },
@@ -274,7 +290,9 @@ local plugins = {
 
   {
     "folke/which-key.nvim",
-    event = "VimEnter",
+    keys = { "<leader>", "<c-r>", "<c-w>", '"', "'", "`", "c", "v", "g" },
+    -- event = "VimEnter",
+    cmd = "WhichKey",
     init = function()
       require("core.utils").load_mappings "whichkey"
     end,

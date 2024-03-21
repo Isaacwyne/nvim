@@ -13,8 +13,6 @@ local options = {
     "python",
     "query",
     "regex",
-    "tsx",
-    "typescript",
     "vim",
     "vimdoc",
     "yaml",
