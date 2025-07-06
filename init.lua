@@ -1,20 +1,16 @@
-local load = function(mod)
-  package.loaded[mod] = nil
-  require(mod)
-end
+require 'core.options'
+require 'core.keymaps'
+require 'core.autocmds'
+require 'plugins'
 
-for _, source in ipairs {
-  "core.options",
-  "core.autocmds",
-  "core.keymaps",
-  "plugins",
-} do
-  local present, fault = pcall(load, source)
-  if not present then
-    vim.api.nvim_err_writeln("Failed to load " .. source .. "\n\n" .. fault)
-  end
-end
+------- Transparent background ---------
+-- Set the background of the Normal highlight group to transparent
+vim.api.nvim_set_hl(0, 'Normal', { bg = 'NONE' })
 
-require("core.utils").load_mappings "general"
+-- Set the background of non-text elements to transparent
+vim.api.nvim_set_hl(0, 'NonText', { bg = 'NONE' })
 
-vim.cmd [[ hi def link LazyNormal Normal ]]
+-- Optionally, set other highlight groups to transparent
+vim.api.nvim_set_hl(0, 'LineNr', { bg = 'NONE' })
+vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'NONE' })
+vim.api.nvim_set_hl(0, 'EndOfBuffer', { bg = 'NONE' })
