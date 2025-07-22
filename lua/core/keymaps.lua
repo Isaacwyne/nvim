@@ -9,3 +9,7 @@ vim.keymap.set('n', ']b', '<cmd>bnext<cr>', { desc = 'goto next buffer' })
 vim.keymap.set('n', 'x', '"_x')
 vim.keymap.set('v', '<', '<gv')
 vim.keymap.set('v', '>', '>gv')
+
+-- next greatest remap ever [(according to thePrimeagen :)]
+vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]], { desc = 'yank to system clipboard' })
+vim.keymap.set('n', '<leader>Y', [["+Y]])
