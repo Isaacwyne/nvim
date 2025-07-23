@@ -3,6 +3,7 @@ return {
     'echasnovski/mini.nvim',
     config = function()
       require('mini.surround').setup()
+      require('mini.comment').setup()
 
       -- Statusline
       local statusline = require 'mini.statusline'
@@ -123,7 +124,11 @@ return {
     opts = {
       bigfile = { enable = true },
       indent = { enabled = true },
+      input = { enabled = true },
       quickfile = { enabled = true },
+      scope = { enabled = true },
+      scroll = { enabled = true },
+      words = { enabled = true },
     },
   },
 }
