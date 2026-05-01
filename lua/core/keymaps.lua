@@ -13,3 +13,7 @@ vim.keymap.set('v', '>', '>gv')
 -- next greatest remap ever [(according to thePrimeagen :)]
 vim.keymap.set({ 'n', 'v' }, '<leader>y', [["+y]], { desc = 'yank to system clipboard' })
 vim.keymap.set('n', '<leader>Y', [["+Y]])
+
+-- comments
+vim.keymap.set('n', '<leader>/', 'gcc', { remap = true })
+vim.keymap.set('v', '<leader>/', 'gc', { remap = true })
