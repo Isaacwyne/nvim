@@ -6,7 +6,7 @@ return {
       require('mini.comment').setup()
       require('mini.pairs').setup()
       require('mini.indentscope').setup()
-      require('mini.cursorword').setup()
+      -- require('mini.cursorword').setup()
       require('mini.trailspace').setup()
       require('mini.notify').setup()
       require('mini.icons').setup()
